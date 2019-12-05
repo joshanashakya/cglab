@@ -10,4 +10,9 @@ public class TurnTest {
 		double area = pointService.computeArea(points);
 		return area > 0 ? "left" : "right";
 	}
+
+	public boolean isLeftTurn(Point[] points) {
+		String turn = getTurn(points);
+		return "left".equalsIgnoreCase(turn);
+	}
 }
