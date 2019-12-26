@@ -52,7 +52,7 @@ public class PointLineClassificationV2 {
 //		       .
 //		      .
 //		     .
-//		s    .
+//		s   .
 		if (sx < tx && sy < ty)
 			return x < sx && y < sy;
 		

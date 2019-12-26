@@ -16,7 +16,31 @@ public class Point {
 	public int getY() {
 		return y;
 	}
-	
+
+	public boolean aheadOf(Point obj) {
+		return this.x < obj.x || this.y < obj.y;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (obj == null)
+			return false;
+		if (!(obj instanceof Point))
+			return false;
+		if (obj == this)
+			return true;
+		Point pt = (Point) obj;
+		return this.x == pt.getX() && this.y == pt.getY();
+	}
+
+	@Override
+	public int hashCode() {
+		int result = 17;
+		result = 31 * result + x;
+		result = 31 * result + y;
+		return result;
+	}
+
 	@Override
 	public String toString() {
 		return String.format("(%d, %d)", this.getX(), this.getY());
