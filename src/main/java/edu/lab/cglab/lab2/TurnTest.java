@@ -15,4 +15,9 @@ public class TurnTest {
 		String turn = getTurn(points);
 		return "left".equalsIgnoreCase(turn);
 	}
+
+	public boolean isRightTurn(Point[] points) {
+		String turn = getTurn(points);
+		return "right".equalsIgnoreCase(turn);
+	}
 }

@@ -73,7 +73,11 @@ public class MainV2 {
 				double tmpSlope = calSlope(current, point);
 				int tmpXdist = getXdist(current, point);
 				// for +ve slope and +ve xdist
-				if (slope > 0 && tmpSlope > 0) {
+				if ((slope > 0 && tmpSlope > 0) && (xdist > 0 && tmpXdist > 0)) {
+					if (tmpSlope < slope && tmpXdist < xdist) {
+						selected = point;
+					}
+				} else if ((slope >= 0  && tmpSlope >= 0) && (xdist > 0 || tmpXdist > 0)) {
 					if (tmpSlope < slope && tmpXdist < xdist) {
 						selected = point;
 					}
@@ -92,6 +96,8 @@ public class MainV2 {
 	}
 
 	private double calSlope(Point point1, Point point2) {
+		if ((point2.getX() - point1.getX()) == 0)
+			return 0;
 		return (point2.getY() - point1.getY()) / (double) (point2.getX() - point1.getX());
 	}
 
