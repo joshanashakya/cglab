@@ -17,13 +17,13 @@ public class Main {
 	private static final String FILE_NAME = "lab4.txt";
 
 	public static void main(String[] args) {
-		Main main = new Main();
 		String str = FileReaderWriter.read(FILE_NAME);
 		String[] lines = str.split("\n");
 		int noOfTestCases = Integer.valueOf(lines[0]);
 		int idx = 1;
 		ConvexHull ePCh = new ExtremePointConvexHull();
 		ConvexHull eECh = new ExtremeEdgeConvexHull();
+		ConvexHull giftWrap = new GiftWrapAlgo();
 		for (int i = 0; i < noOfTestCases; i++) {
 			Point[] pointsArr = Utilities.createPoints(lines[idx]);
 			List<Point> points = new ArrayList<>(Arrays.asList(pointsArr));
@@ -36,6 +36,12 @@ public class Main {
 			List<Point> convexHullPoints2 = eECh.get(points);
 			print(convexHullPoints2);
 
+			System.out.println("\n\nGIFT WRAPPING ALGORITHM\n==========================");
+			List<Point> convexHullPoints3 = giftWrap.get(points);
+			print(convexHullPoints3);
+
+			System.out.println();
+			idx++;
 		}
 	}
 
