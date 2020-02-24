@@ -1,7 +1,6 @@
 package edu.lab.cglab.lab4;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class GiftWrapAlgo implements ConvexHull {
 	private boolean isOnRight(Point current, Point min, Point max) {
 		if (current.equals(min))
 			return true;
-		if (current.equals(max))
+		if (current.equals(max) || current.getY() == max.getY())
 			return false;
 		return min.getX() < current.getX() && max.getX() < current.getX();
 	}
@@ -46,13 +45,15 @@ public class GiftWrapAlgo implements ConvexHull {
 		List<Point> filtered = new ArrayList<>();
 		if (isOnRight)
 			for (Point point : points) {
-				if (point.getY() > current.getY())
+				if (point.getY() > current.getY() || (point.getX() > current.getX() && point.getY() == current.getY()))
 					filtered.add(point);
 			}
 		else
 			for (Point point : points) {
-				if (point.getY() < current.getY())
+				if (point.getY() < current.getY()
+						|| (point.getX() < current.getX() && point.getY() == current.getY())) {
 					filtered.add(point);
+				}
 			}
 		return filtered;
 	}
