@@ -78,9 +78,10 @@ public class GiftWrapAlgo implements ConvexHull {
 	}
 
 	private double calAng(Point p1, Point p2) {
-		double slope = (p2.getY() - p1.getY()) / (double) (p2.getX() - p1.getX());
-		double radAng = Math.atan(slope);
-		double angle = Math.toDegrees(radAng);
+		int x = p2.getX() - p1.getX();
+		int y = p2.getY() - p1.getY();
+		double radian = Math.atan2(y, x);
+		double angle = Math.toDegrees(radian);
 		// the calculations used in tan2 function will return a value anywhere between
 		// -180 to +180. Therefore, to obtain an angle between 0-360 we need to correct
 		// the results that are less than 0. This is covered with the if statement which

@@ -24,6 +24,7 @@ public class Main {
 		ConvexHull ePCh = new ExtremePointConvexHull();
 		ConvexHull eECh = new ExtremeEdgeConvexHull();
 		ConvexHull giftWrap = new GiftWrapAlgo();
+		ConvexHull grahamsScan = new GrahamsScan();
 		for (int i = 0; i < noOfTestCases; i++) {
 			Point[] pointsArr = Utilities.createPoints(lines[idx]);
 			List<Point> points = new ArrayList<>(Arrays.asList(pointsArr));
@@ -39,6 +40,10 @@ public class Main {
 			System.out.println("\n\nGIFT WRAPPING ALGORITHM\n==========================");
 			List<Point> convexHullPoints3 = giftWrap.get(points);
 			print(convexHullPoints3);
+
+			System.out.println("\n\nGRAHAM'S SCAN ALGORITHM\n==========================");
+			List<Point> convexHullPoints4 = grahamsScan.get(points);
+			print(convexHullPoints4);
 
 			System.out.println();
 			idx++;
