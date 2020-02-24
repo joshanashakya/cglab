@@ -23,6 +23,7 @@ public class MainV2 {
 		for (int i = 0; i < noOfTestCases; i++) {
 			Point[] points = main.createPoints(lines[idx]);
 			List<Point> sortedPoints = main.sort(points);
+			System.out.println("Polygon points are: " + Arrays.toString(sortedPoints.toArray()));
 			// create polygon
 			Polygon polygon = polygonService.create(sortedPoints);
 
@@ -34,12 +35,19 @@ public class MainV2 {
 			Point[] checkPoints = main.createPoints(lines[idx + 1]);
 			for (int j = 0; j < checkPoints.length; j++) {
 				Point point = checkPoints[j];
+				System.out.println("Point: " + point.toString());
 				// turn test
-				boolean isIncluded = polygonService.isIncluded(polygon, point);
-				System.out.format("Turn Test Method:The point is %s polygon.\n", isIncluded ? "inside" : "outside");
+				boolean isIncluded = false;
+				if (isConvex) {
+					isIncluded = polygonService.isIncluded(polygon, point);
+					System.out.printf("Turn Test Method:The point is %s polygon.\n", isIncluded ? "inside" : "outside");
+				}
 				// ray casting
-				isIncluded = new RayCasting().isIncluded(polygon, point);
-				System.out.format("Ray Casting Method:The point is %s polygon.\n\n", isIncluded ? "inside" : "outside");
+				if (!isConvex) {
+					isIncluded = new RayCasting().isIncluded(polygon, point);
+					System.out.printf("Ray Casting Method:The point is %s polygon.\n\n",
+							isIncluded ? "inside" : "outside");
+				}
 			}
 			idx = idx + 2;
 		}
@@ -65,6 +73,36 @@ public class MainV2 {
 		ySortedPoints.remove(current);
 
 		while (!ySortedPoints.isEmpty()) {
+			Point selected = null;
+			double angle = Double.MAX_VALUE;
+			for (int i = 0; i < ySortedPoints.size(); i++) {
+				if (selected == null) {
+					selected = ySortedPoints.get(i);
+					angle = calAng(current, selected);
+				} else {
+					Point tmpPoint = ySortedPoints.get(i);
+					double tmpAngle = calAng(current, tmpPoint);
+					if (tmpAngle < angle) {
+						selected = tmpPoint;
+						angle = tmpAngle;
+					}
+				}
+			}
+			sortedPoints.add(selected);
+			current = selected;
+			ySortedPoints.remove(selected);
+		}
+		return sortedPoints;
+	}
+
+	private List<Point> sortTest(Point[] points) {
+		List<Point> ySortedPoints = sortOnY(points);
+		List<Point> sortedPoints = new ArrayList<>();
+		Point current = ySortedPoints.get(0);
+		sortedPoints.add(current);
+		ySortedPoints.remove(current);
+
+		while (!ySortedPoints.isEmpty()) {
 			Point selected = ySortedPoints.get(0);
 			double slope = calSlope(current, selected);
 			int xdist = getXdist(current, selected);
@@ -77,7 +115,7 @@ public class MainV2 {
 					if (tmpSlope < slope && tmpXdist < xdist) {
 						selected = point;
 					}
-				} else if ((slope >= 0  && tmpSlope >= 0) && (xdist > 0 || tmpXdist > 0)) {
+				} else if ((slope >= 0 && tmpSlope >= 0) && (xdist > 0 || tmpXdist > 0)) {
 					if (tmpSlope < slope && tmpXdist < xdist) {
 						selected = point;
 					}
@@ -87,8 +125,19 @@ public class MainV2 {
 			current = selected;
 			ySortedPoints.remove(selected);
 		}
+		System.out.println("Sorted points:");
 		System.out.println(Arrays.toString(sortedPoints.toArray()));
 		return sortedPoints;
+	}
+
+	private double calAng(Point p1, Point p2) {
+		double x = p2.getX() - p1.getX();
+		double y = p2.getY() - p1.getY();
+		double radian = Math.atan2(y, x);
+		double angle = Math.toDegrees(radian);
+		if (angle < 0)
+			return angle + 360;
+		return angle;
 	}
 
 	private int getXdist(Point point1, Point point2) {
